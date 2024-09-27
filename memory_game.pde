@@ -12,8 +12,13 @@ int[][] cardValues = {
   {1, 2, 3, 4, 5},
   {1, 2, 3, 4, 5},
   {6, 7, 8, 9, 10},
-  {6, 7, 8, 9, 10}
-  
+  {6, 7, 8, 9, 10} 
+};
+int[][] cardValues_2 = {
+  {1, 2, 3, 4, 5},
+  {1, 2, 3, 4, 5},
+  {1, 2, 3, 4, 5},
+  {1, 2, 3, 4, 5},
 }; 
 int firstCardX = -1, firstCardY = -1;
 int secondCardX = -1, secondCardY = -1; 
@@ -21,7 +26,7 @@ boolean waitingForSecondCard = false;
 int delayCounter = 0;
 boolean playGame = false;
 int u = 80;
-int v = 50;
+int v = 30;
 int o = 0;
 
 void setup() {  
@@ -51,7 +56,7 @@ void draw() {
   }}
   else {
   background(255);
-  for(int p = 0; p < 180 ;p = p+60){
+  for(int p = 0; p < 240 ;p = p+60){
     gameMode(u,v+p ,p);
     o = o + 60;
   }
@@ -91,6 +96,10 @@ void gameMode(int u,int v,int p){
   else if (p == 120){
   fill(0); 
   text("Hard", u+60, v+25);
+  }
+  else if (p == 180){
+  fill(0); 
+  text("2 pairs", u+60, v+25);
   }
 }
 
@@ -136,7 +145,7 @@ void mousePressed() {
   else{
     if (mouseX > u && mouseX < u + 120 && mouseY > v  && mouseY < v + 50){
     playGame = true;
-     rows = rows+4;
+     rows = rows+2;
     }
      else if (mouseX > u && mouseX < u + 120 && mouseY > v+60  && mouseY < v + 50+60){
         playGame = true;
@@ -145,6 +154,11 @@ void mousePressed() {
      else if (mouseX > u && mouseX < u + 120 && mouseY > v+120  && mouseY < v + 50+120){
         playGame = true;
         rows = rows+8;
+     }
+     else if (mouseX > u && mouseX < u + 120 && mouseY > v+180  && mouseY < v + 50+180){
+        playGame = true;
+        rows = rows+4;
+        cardValues =  cardValues_2 ;
      }
      cardFlipped = new int[rows][cols];
   }}
