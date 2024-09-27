@@ -1,19 +1,28 @@
 //Supawit Sukdang 6601012610164
 int cols = 5;
-int rows = 4;
-int cardWidth = 50;
-int cardHeight = 60;
-int[][] cardFlipped = new int[rows][cols];  
+int rows;
+int cardWidth = 25;
+int cardHeight = 35;
+int[][] cardFlipped ;  
 int[][] cardValues = {
   {1, 2, 3, 4, 5},
   {1, 2, 3, 4, 5},
   {6, 7, 8, 9, 10},
+  {6, 7, 8, 9, 10},
+  {1, 2, 3, 4, 5},
+  {1, 2, 3, 4, 5},
+  {6, 7, 8, 9, 10},
   {6, 7, 8, 9, 10}
+  
 }; 
 int firstCardX = -1, firstCardY = -1;
 int secondCardX = -1, secondCardY = -1; 
 boolean waitingForSecondCard = false;
 int delayCounter = 0;
+boolean playGame = false;
+int u = 80;
+int v = 50;
+int o = 0;
 
 void setup() {  
   size(300, 300); 
@@ -26,7 +35,8 @@ void setup() {
 }
 
 void draw() {
-  background(255); 
+  if(playGame){ 
+  background(255);
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
       int x = j * (cardWidth + 10); 
@@ -38,7 +48,15 @@ void draw() {
         memoryGame(x, y, cardValues[i][j]);  
       }
     }
+  }}
+  else {
+  background(255);
+  for(int p = 0; p < 180 ;p = p+60){
+    gameMode(u,v+p ,p);
+    o = o + 60;
   }
+  }
+ 
 
   if (waitingForSecondCard) {
     delayCounter++;
@@ -56,7 +74,25 @@ void draw() {
     }
   }
 }
-
+void gameMode(int u,int v,int p){
+  // x=80,200 y=50,100 
+  line(u, v,u+120, v);  
+  line(u, v, u, v+50);  
+  line(u+120, v, u+120,v+50);  
+  line(u, v+50,u+120, v+50); 
+  if (p == 0){
+  fill(0); 
+  text("Easy", u+60, v+25);
+  }
+  else if (p == 60){
+  fill(0); 
+  text("Nomal", u+60, v+25);
+  }
+  else if (p == 120){
+  fill(0); 
+  text("Hard", u+60, v+25);
+  }
+}
 
 void memoryGame(int x, int y, int number) {
   line(x, y, x + cardWidth, y);  
@@ -74,28 +110,45 @@ void flipCard(int x, int y) {
 }
 
 void mousePressed() {
-  if (waitingForSecondCard) return; 
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < cols; j++) {
-      int x = j * (cardWidth + 10); 
-      int y = i * (cardHeight + 10); 
-      if (mouseX > x && mouseX < x + cardWidth && mouseY > y && mouseY < y + cardHeight) {
-        if (cardFlipped[i][j] == 0) {
-          cardFlipped[i][j] = 1;       
-          if (firstCardX == -1) {
-            firstCardX = j;
-            firstCardY = i;
-          } else {
-            secondCardX = j;
-            secondCardY = i;
-            waitingForSecondCard = true;
-            checkForMatch(); 
+  if(playGame){
+    if (waitingForSecondCard) return; 
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        int x = j * (cardWidth + 10); 
+        int y = i * (cardHeight + 10); 
+        if (mouseX > x && mouseX < x + cardWidth && mouseY > y && mouseY < y + cardHeight) {
+          if (cardFlipped[i][j] == 0) {
+            cardFlipped[i][j] = 1;       
+            if (firstCardX == -1) {
+              firstCardX = j;
+              firstCardY = i;
+            } else {
+              secondCardX = j;
+              secondCardY = i;
+              waitingForSecondCard = true;
+              checkForMatch(); 
+            }
           }
         }
       }
     }
   }
-}
+  else{
+    if (mouseX > u && mouseX < u + 120 && mouseY > v  && mouseY < v + 50){
+    playGame = true;
+     rows = rows+4;
+    }
+     else if (mouseX > u && mouseX < u + 120 && mouseY > v+60  && mouseY < v + 50+60){
+        playGame = true;
+        rows = rows+4;
+     }
+     else if (mouseX > u && mouseX < u + 120 && mouseY > v+120  && mouseY < v + 50+120){
+        playGame = true;
+        rows = rows+8;
+     }
+     cardFlipped = new int[rows][cols];
+  }}
+  
 
 void checkForMatch() {
   if (firstCardX != -1 && firstCardY != -1 && secondCardX != -1 && secondCardY != -1) {
