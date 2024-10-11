@@ -2,6 +2,7 @@
 //multiplayer
 //hint 
 //timer 
+boolean devMode = false;
 boolean firstCardOpen = false;
 int countCardRemove = 0;
 int cols = 5;
@@ -19,10 +20,10 @@ int[][] cardValues = {
   {1, 2, 3, 4, 5},
   {6, 7, 8, 9, 10},
   {6, 7, 8, 9, 10},
-  {1, 2, 3, 4, 5},
-  {1, 2, 3, 4, 5},
-  {6, 7, 8, 9, 10},
-  {6, 7, 8, 9, 10} 
+  {11, 12, 13, 14, 15},
+  {11, 12, 13, 14, 15},
+  {16, 17, 18, 19, 20},
+  {16, 17, 18, 19, 20} 
 };
 int[][] cardValues_2 = {
   {1, 2, 3, 4, 5},
@@ -61,12 +62,12 @@ void draw() {
       int x = j * (cardWidth + 10); 
       int y = i * (cardHeight + 10);  
       if (cardFlipped[i][j] == 0 ) {
-        flipCard(x, y); 
+        flipCard(x, y, cardValues[i][j]); 
       } else if (cardFlipped[i][j] == 1) {
            memoryGame(x, y, cardValues[i][j]); 
     }
     }}
-  
+  fill(0);
   text("Turn: Player ", 80, 450);
   text(turn_current, 150, 450);
   
@@ -84,10 +85,11 @@ void draw() {
   }
   else if(!playGame) {
   background(255);
-  for(int p = 0; p < 240 ;p = p+60){
+  for(int p = 0; p < 300 ;p = p+60){
     gameMode(u,v+p ,p);
     o = o + 60;
-  }
+  }if(devMode){
+    text("DevMode Open",238,450);}
   
   }
   else if(countCardRemove == (rows*cols)/2 && playGame){
@@ -134,6 +136,10 @@ void timer(){
     }
 }
 
+
+
+
+
 void hintGame(){
   if(sec <= 5 && firstCardOpen){
     text("Hint: Maybe card in row", 200, 410);
@@ -176,6 +182,10 @@ void gameMode(int u,int v,int p){
   fill(0); 
   text("2 pairs", u+60, v+25);
   }
+  else if (p == 240){
+  fill(0); 
+  text("DevMode", u+60, v+25);
+  }
 }
 
 void memoryGame(int x, int y, int number) {
@@ -188,9 +198,17 @@ void memoryGame(int x, int y, int number) {
   text(number, x + cardWidth / 2, y + cardHeight / 2);
 }
 
-void flipCard(int x, int y) {
+void flipCard(int x, int y, int value) {
+  if(devMode){
+    fill(150); 
+    rect(x, y, cardWidth, cardHeight);
+    textSize(20);
+    fill(0, 408, 612);
+    text(value,x+10,y+10);
+    
+  }else{
   fill(150); 
-  rect(x, y, cardWidth, cardHeight);
+  rect(x, y, cardWidth, cardHeight);}
 }
 
 void mousePressed() {
@@ -241,6 +259,13 @@ void mousePressed() {
         rows = rows+4;
         
         cardValues =  cardValues_2 ;
+     }
+     else if (mouseX > u && mouseX < u + 120 && mouseY > v+240  && mouseY < v + 50+240){
+       if(devMode){
+        devMode = false;}
+        else{
+          devMode = true;
+        }
      }
      cardFlipped = new int[rows][cols];
   }}
