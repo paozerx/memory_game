@@ -2,6 +2,7 @@
 //multiplayer
 //hint 
 //timer 
+int countCardRemove = 0;
 int cols = 5;
 int rows;
 int cardWidth = 80;
@@ -46,7 +47,7 @@ void setup() {
 }
 
 void draw() {
-  if(playGame){ 
+  if(countCardRemove != (rows*cols)/2 && playGame){
   background(255);
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
@@ -66,12 +67,16 @@ void draw() {
   text("Score: Player 2: ", 300, 460);
   text(score_2, 375, 460);
   }
-  else {
+  else if(!playGame) {
   background(255);
   for(int p = 0; p < 240 ;p = p+60){
     gameMode(u,v+p ,p);
     o = o + 60;
   }
+  
+  }
+  else if(countCardRemove == (rows*cols)/2 && playGame){
+    checkGamePlaying();
   }
  
 
@@ -158,28 +163,43 @@ void mousePressed() {
     if (mouseX > u && mouseX < u + 120 && mouseY > v  && mouseY < v + 50){
     playGame = true;
      rows = rows+2;
+     
     }
      else if (mouseX > u && mouseX < u + 120 && mouseY > v+60  && mouseY < v + 50+60){
         playGame = true;
         rows = rows+4;
+         
      }
      else if (mouseX > u && mouseX < u + 120 && mouseY > v+120  && mouseY < v + 50+120){
         playGame = true;
         rows = rows+8;
+        
      }
      else if (mouseX > u && mouseX < u + 120 && mouseY > v+180  && mouseY < v + 50+180){
         playGame = true;
         rows = rows+4;
+        
         cardValues =  cardValues_2 ;
      }
      cardFlipped = new int[rows][cols];
   }}
   
-
+void checkGamePlaying(){
+  if(score_1 > score_2){
+    text("Player 1 Win!!!!",230,250);
+  }
+  else if(score_1 < score_2){
+    text("Player 2 Win!!!!",230,250);
+  }
+  else if(score_1 == score_2){
+    text("Two Player No One Win",230,250);
+  }
+}
 void checkForMatch() {
   if (firstCardX != -1 && firstCardY != -1 && secondCardX != -1 && secondCardY != -1) {
     if (cardValues[firstCardY][firstCardX] == cardValues[secondCardY][secondCardX]) {
       removeMatchedCards(firstCardY, firstCardX, secondCardY, secondCardX);
+      countCardRemove = countCardRemove + 1;
       if(turn_current == "1"){
         score_1 = score_1 + 1;
         turn_current = "2";
