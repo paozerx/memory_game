@@ -5,6 +5,7 @@
 int countCardRemove = 0;
 int cols = 5;
 int rows;
+int sec = 10;
 int cardWidth = 80;
 int cardHeight = 40;
 String turn_current= "1";
@@ -48,6 +49,10 @@ void setup() {
 
 void draw() {
   if(countCardRemove != (rows*cols)/2 && playGame){
+  delayCounter++;
+    if (delayCounter > 60){ 
+      timer();
+      delayCounter = 0;}
   background(255);
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
@@ -62,8 +67,16 @@ void draw() {
   }
   text("Turn: Player ", 80, 430);
   text(turn_current, 150, 430);
+  
+  text("Timer:  ", 80, 460);
+  text(sec, 120, 460);
+  
+
+
+  
   text("Score: Player 1: ", 300, 430);
   text(score_1, 375, 430);
+  
   text("Score: Player 2: ", 300, 460);
   text(score_2, 375, 460);
   }
@@ -95,6 +108,19 @@ void draw() {
       delayCounter = 0;
     }
   }
+}
+void timer(){
+    sec = sec - 1;
+    if(sec == 0){
+      if(turn_current == "1"){
+        turn_current = "2";
+        sec = 10;
+      }
+      else if(turn_current == "2"){
+        turn_current = "1";
+        sec = 10;
+      }
+    }
 }
 void gameMode(int u,int v,int p){
   // x=80,200 y=50,100 
@@ -203,10 +229,12 @@ void checkForMatch() {
       if(turn_current == "1"){
         score_1 = score_1 + 1;
         turn_current = "2";
+        sec = 10;
       }
       else if(turn_current == "2"){
         score_2 = score_2 + 1;
         turn_current = "1";
+        sec = 10;
       }
     } else {
       waitingForSecondCard = true;
