@@ -65,20 +65,22 @@ void draw() {
       }
     }
   }
-  text("Turn: Player ", 80, 430);
-  text(turn_current, 150, 430);
+  text("Hint: Select two card match number.", 250, 410);
   
-  text("Timer:  ", 80, 460);
-  text(sec, 120, 460);
+  text("Turn: Player ", 80, 450);
+  text(turn_current, 150, 450);
+  
+  text("Timer:  ", 80, 480);
+  text(sec, 120, 480);
   
 
 
   
-  text("Score: Player 1: ", 300, 430);
-  text(score_1, 375, 430);
+  text("Score: Player 1: ", 300, 450);
+  text(score_1, 375, 450);
   
-  text("Score: Player 2: ", 300, 460);
-  text(score_2, 375, 460);
+  text("Score: Player 2: ", 300, 480);
+  text(score_2, 375, 480);
   }
   else if(!playGame) {
   background(255);
