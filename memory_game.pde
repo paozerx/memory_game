@@ -4,8 +4,11 @@
 //timer 
 int cols = 5;
 int rows;
-int cardWidth = 25;
-int cardHeight = 35;
+int cardWidth = 80;
+int cardHeight = 40;
+String turn_current= "1";
+int score_1 = 0;
+int score_2 = 0;
 int[][] cardFlipped ;  
 int[][] cardValues = {
   {1, 2, 3, 4, 5},
@@ -33,7 +36,7 @@ int v = 30;
 int o = 0;
 
 void setup() {  
-  size(300, 300); 
+  size(500, 500); 
   background(255); 
   smooth();
   frameRate(30); 
@@ -49,14 +52,20 @@ void draw() {
     for (int j = 0; j < cols; j++) {
       int x = j * (cardWidth + 10); 
       int y = i * (cardHeight + 10);  
-      
       if (cardFlipped[i][j] == 0) {
         flipCard(x, y); 
       } else if (cardFlipped[i][j] == 1) {
-        memoryGame(x, y, cardValues[i][j]);  
+        memoryGame(x, y, cardValues[i][j]); 
       }
     }
-  }}
+  }
+  text("Turn: Player ", 80, 430);
+  text(turn_current, 150, 430);
+  text("Score: Player 1: ", 300, 430);
+  text(score_1, 375, 430);
+  text("Score: Player 2: ", 300, 460);
+  text(score_2, 375, 460);
+  }
   else {
   background(255);
   for(int p = 0; p < 240 ;p = p+60){
@@ -171,6 +180,14 @@ void checkForMatch() {
   if (firstCardX != -1 && firstCardY != -1 && secondCardX != -1 && secondCardY != -1) {
     if (cardValues[firstCardY][firstCardX] == cardValues[secondCardY][secondCardX]) {
       removeMatchedCards(firstCardY, firstCardX, secondCardY, secondCardX);
+      if(turn_current == "1"){
+        score_1 = score_1 + 1;
+        turn_current = "2";
+      }
+      else if(turn_current == "2"){
+        score_2 = score_2 + 1;
+        turn_current = "1";
+      }
     } else {
       waitingForSecondCard = true;
       delayCounter = 0;
