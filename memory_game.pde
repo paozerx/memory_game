@@ -91,7 +91,7 @@ void draw() {
     gameMode(u,v+p ,p);
     o = o + 60;
   }if(devMode){
-    text("DevMode Open",238,450);}
+    text("DevMode Open",218,450);}
   
   }
   else if(countCardRemove == (rows*cols)/2 && playGame){
