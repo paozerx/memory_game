@@ -2,9 +2,11 @@
 //multiplayer
 //hint 
 //timer 
+boolean firstCardOpen = false;
 int countCardRemove = 0;
 int cols = 5;
 int rows;
+int location = 0;
 int sec = 10;
 int cardWidth = 80;
 int cardHeight = 40;
@@ -33,8 +35,8 @@ int secondCardX = -1, secondCardY = -1;
 boolean waitingForSecondCard = false;
 int delayCounter = 0;
 boolean playGame = false;
-int u = 80;
-int v = 30;
+int u = 180;
+int v = 100;
 int o = 0;
 
 void setup() {  
@@ -58,14 +60,12 @@ void draw() {
     for (int j = 0; j < cols; j++) {
       int x = j * (cardWidth + 10); 
       int y = i * (cardHeight + 10);  
-      if (cardFlipped[i][j] == 0) {
+      if (cardFlipped[i][j] == 0 ) {
         flipCard(x, y); 
       } else if (cardFlipped[i][j] == 1) {
-        memoryGame(x, y, cardValues[i][j]); 
-      }
+           memoryGame(x, y, cardValues[i][j]); 
     }
-  }
-  text("Hint: Select two card match number.", 250, 410);
+    }}
   
   text("Turn: Player ", 80, 450);
   text(turn_current, 150, 450);
@@ -73,7 +73,7 @@ void draw() {
   text("Timer:  ", 80, 480);
   text(sec, 120, 480);
   
-
+  hintGame();
 
   
   text("Score: Player 1: ", 300, 450);
@@ -114,6 +114,15 @@ void draw() {
 void timer(){
     sec = sec - 1;
     if(sec == 0){
+     for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        if(cardFlipped[i][j] == 1 && firstCardOpen){
+          cardFlipped[i][j] = 0;
+          firstCardX = -1;
+          firstCardY = -1;
+          
+        }
+      }}
       if(turn_current == "1"){
         turn_current = "2";
         sec = 10;
@@ -124,6 +133,27 @@ void timer(){
       }
     }
 }
+
+void hintGame(){
+  if(sec <= 5 && firstCardOpen){
+    text("Hint: Maybe card in row", 200, 410);
+    text(location, 310, 410);
+  }
+}
+
+void hintLocate(int value,int r,int c){
+  for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        if(cardValues[i][j]==value){
+          if(i==r && j==c){
+            continue;
+          }
+          location = i+1;
+        }
+      }}
+  
+}
+
 void gameMode(int u,int v,int p){
   // x=80,200 y=50,100 
   line(u, v,u+120, v);  
@@ -176,10 +206,13 @@ void mousePressed() {
             if (firstCardX == -1) {
               firstCardX = j;
               firstCardY = i;
+              hintLocate(cardValues[i][j],i,j);
+              firstCardOpen = true;
             } else {
               secondCardX = j;
               secondCardY = i;
               waitingForSecondCard = true;
+              firstCardOpen = false;
               checkForMatch(); 
             }
           }
