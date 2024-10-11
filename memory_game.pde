@@ -10,22 +10,24 @@ int rows;
 int location = 0;
 int sec = 10;
 int cardWidth = 80;
-int cardHeight = 40;
+int cardHeight = 60;
 String turn_current= "1";
 int score_1 = 0;
 int score_2 = 0;
-int[][] cardFlipped ;  
+int[][] cardFlipped;
 int[][] cardValues = {
-  {1, 2, 3, 4, 5},
-  {1, 2, 3, 4, 5},
-  {6, 7, 8, 9, 10},
-  {6, 7, 8, 9, 10},
-  {11, 12, 13, 14, 15},
-  {11, 12, 13, 14, 15},
-  {16, 17, 18, 19, 20},
-  {16, 17, 18, 19, 20} 
-};
-int[][] cardValues_2 = {
+  {1, 3, 2, 5, 4},
+  {2, 1, 4, 3, 5},
+  {7, 9, 8, 10, 6},
+  {9, 7, 10, 8, 6},
+  {11, 13, 15, 12, 14},
+  {13, 11, 12, 15, 14},
+  {17, 20, 19, 16, 18},
+  {20, 17, 18, 19, 16}
+}
+;
+
+int[][] cardValues2p = {
   {1, 2, 3, 4, 5},
   {1, 2, 3, 4, 5},
   {1, 2, 3, 4, 5},
@@ -36,12 +38,12 @@ int secondCardX = -1, secondCardY = -1;
 boolean waitingForSecondCard = false;
 int delayCounter = 0;
 boolean playGame = false;
-int u = 180;
+int u = 160;
 int v = 100;
 int o = 0;
 
 void setup() {  
-  size(500, 500); 
+  size(450, 800); 
   background(255); 
   smooth();
   frameRate(30); 
@@ -68,20 +70,20 @@ void draw() {
     }
     }}
   fill(0);
-  text("Turn: Player ", 80, 450);
-  text(turn_current, 150, 450);
+  text("Turn: Player ", 80, 640);
+  text(turn_current, 150, 640);
   
-  text("Timer:  ", 80, 480);
-  text(sec, 120, 480);
+  text("Timer:  ", 80, 670);
+  text(sec, 120,670);
   
   hintGame();
 
   
-  text("Score: Player 1: ", 300, 450);
-  text(score_1, 375, 450);
+  text("Score: Player 1: ", 320, 640);
+  text(score_1, 395, 640);
   
-  text("Score: Player 2: ", 300, 480);
-  text(score_2, 375, 480);
+  text("Score: Player 2: ", 320, 670);
+  text(score_2, 395, 670);
   }
   else if(!playGame) {
   background(255);
@@ -142,8 +144,8 @@ void timer(){
 
 void hintGame(){
   if(sec <= 5 && firstCardOpen){
-    text("Hint: Maybe card in row", 200, 410);
-    text(location, 310, 410);
+    text("Hint: Maybe have card in column", 190, 600);
+    text(location, 350, 600);
   }
 }
 
@@ -154,7 +156,7 @@ void hintLocate(int value,int r,int c){
           if(i==r && j==c){
             continue;
           }
-          location = i+1;
+          location = j+1;
         }
       }}
   
@@ -239,6 +241,7 @@ void mousePressed() {
     }
   }
   else{
+    
     if (mouseX > u && mouseX < u + 120 && mouseY > v  && mouseY < v + 50){
     playGame = true;
      rows = rows+2;
@@ -248,17 +251,18 @@ void mousePressed() {
         playGame = true;
         rows = rows+4;
          
+         
      }
      else if (mouseX > u && mouseX < u + 120 && mouseY > v+120  && mouseY < v + 50+120){
         playGame = true;
         rows = rows+8;
         
+        
      }
      else if (mouseX > u && mouseX < u + 120 && mouseY > v+180  && mouseY < v + 50+180){
         playGame = true;
         rows = rows+4;
-        
-        cardValues =  cardValues_2 ;
+        cardValues =  cardValues2p ;
      }
      else if (mouseX > u && mouseX < u + 120 && mouseY > v+240  && mouseY < v + 50+240){
        if(devMode){
