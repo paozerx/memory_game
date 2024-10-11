@@ -1,4 +1,7 @@
 //Supawit Sukdang 6601012610164
+//multiplayer
+//hint 
+//timer 
 int cols = 5;
 int rows;
 int cardWidth = 25;
